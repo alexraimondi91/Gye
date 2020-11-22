@@ -1,4 +1,4 @@
-package com.MWT.webApi.gym.service;
+package com.MWT.webApi.gym.XmlConvert;
 
 import org.springframework.stereotype.Component;
 

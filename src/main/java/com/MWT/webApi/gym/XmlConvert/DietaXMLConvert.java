@@ -1,4 +1,4 @@
-package com.MWT.webApi.gym.service;
+package com.MWT.webApi.gym.XmlConvert;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
