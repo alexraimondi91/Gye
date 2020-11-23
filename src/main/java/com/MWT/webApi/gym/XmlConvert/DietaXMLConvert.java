@@ -57,7 +57,7 @@ public class DietaXMLConvert {
 			listAlimenti.add(alimentoXMLConvert.convert(alimento));
 		}
 		  
-		dietaXML.setAlimenti(listAlimenti);		
+		//dietaXML.setAlimenti(listAlimenti);		
 		return dietaXML;
 		
 	}

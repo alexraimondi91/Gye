@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -45,7 +46,9 @@ public class Dieta {
 	private String nome;
 	@Column(name = "kcal")
 	public int kcal;	
-	@Column(name = "id_utente")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Utente utente;
+	@Column(name = "id_utente") //da eliminare dopo aver provato la soap action
 	public int idUtente;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
