@@ -14,9 +14,12 @@ import org.springframework.stereotype.Component;
 
 import com.MWT.webApi.gym.model.Alimento;
 import com.MWT.webApi.gym.model.Dieta;
+import com.your_company.dieta.TipoAlimento;
+import com.your_company.dieta.TipoDieta;
 
-import webapi.mastermwt.org.dieta.TipoAlimento;
-import webapi.mastermwt.org.dieta.TipoDieta;
+
+
+
 
 @Component
 public class DietaXMLConvert {
@@ -47,8 +50,8 @@ public class DietaXMLConvert {
 		dietaXML.setDataInserimento(xmlDataInserimento);
 		dietaXML.setDataScadenza(xmlDataFine);
 		dietaXML.setId(dieta.getId());
-		dietaXML.setIdUtente(Integer.toString(dieta.getIdUtente()));
-		dietaXML.setIfo(dieta.getInfo());
+		dietaXML.setIdUtente((dieta.getIdUtente()));
+		dietaXML.setInfo(dieta.getInfo());
 		dietaXML.setNome(dieta.getNome());
 		dietaXML.setKcal(dieta.getKcal());
 		List<Alimento> setAlimenti = dieta.getAlimenti();

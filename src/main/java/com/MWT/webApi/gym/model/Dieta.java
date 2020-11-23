@@ -51,7 +51,7 @@ public class Dieta {
 	@Column(name = "id_utente") //da eliminare dopo aver provato la soap action
 	public int idUtente;
 	
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "dieta_alimento", joinColumns = 
 	@JoinColumn(name = "dieta_id", referencedColumnName = "id", nullable = true), 
 				inverseJoinColumns = @JoinColumn(name = "alimento_id", referencedColumnName = "id"))

@@ -3,8 +3,10 @@ package com.MWT.webApi.gym.XmlConvert;
 import org.springframework.stereotype.Component;
 
 import com.MWT.webApi.gym.model.Alimento;
+import com.your_company.dieta.TipoAlimento;
 
-import webapi.mastermwt.org.dieta.TipoAlimento;
+
+
 
 @Component
 public class AlimentoXMLConvert {

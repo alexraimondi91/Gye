@@ -8,11 +8,9 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.ws.config.annotation.EnableWs;
 import org.springframework.ws.config.annotation.WsConfigurerAdapter;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
-import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
 import org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition;
 import org.springframework.ws.wsdl.wsdl11.Wsdl11Definition;
-import org.springframework.xml.xsd.SimpleXsdSchema;
-import org.springframework.xml.xsd.XsdSchema;
+
 
 
 @EnableWs
@@ -27,10 +25,10 @@ public class SoapServiceConfig extends WsConfigurerAdapter {
 	}
 	
  
-    @Bean(name = "Dieta")
-    public Wsdl11Definition employeeWsdl11Definition() {
+    @Bean(name = "dieta")
+    public Wsdl11Definition dietaWsdl11Definition() {
         SimpleWsdl11Definition wsdl11Definition = new SimpleWsdl11Definition();
-        wsdl11Definition.setWsdl(new ClassPathResource("Dieta.wsdl"));
+        wsdl11Definition.setWsdl(new ClassPathResource("/wsdl/dieta.wsdl"));
  
         return wsdl11Definition;
     }

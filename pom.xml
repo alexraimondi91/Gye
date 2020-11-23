@@ -44,13 +44,6 @@
 		   <version>0.9.0</version>
 		</dependency>
 		
-        <!-- (...non dovrebbe servire, ma a quanto pare l'altra dipendenza di JAX-RS non lo importa...) -->
-        <dependency>
-            <groupId>org.glassfish.jersey.inject</groupId>
-            <artifactId>jersey-hk2</artifactId>
-            <version>2.29</version>
-        </dependency>     
-
 		<dependency>
 			<groupId>wsdl4j</groupId>
 			<artifactId>wsdl4j</artifactId>
@@ -98,7 +91,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<schemaDirectory>src/main/resources/</schemaDirectory>
+					<schemaDirectory>src/main/resources/wsdl</schemaDirectory>
 					<schemaIncludes>
 						<include>*.wsdl</include>
 					</schemaIncludes>
