@@ -1,4 +1,4 @@
-package com.MWT.webApi.gym.resource;
+package com.MWT.webApi.gym.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,36 +21,32 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.MWT.webApi.gym.businessImpl.AlimentoServiceImpl;
 import com.MWT.webApi.gym.exception.ResourceNotFoundException;
 import com.MWT.webApi.gym.model.Alimento;
 import com.MWT.webApi.gym.repository.AlimentoRepository;
 
 @Component
 @Path("/api/v1")
-public class AlimentoResource {
-
+public class AlimentoController {
+	
 	@Autowired
-	private AlimentoRepository alimentoRepository;
+	private AlimentoServiceImpl alimentoServiceImpl;
 
 	@GET
 	@Path("/alimenti")
 	@Produces("application/json")
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
 	public List<Alimento> getAllAlimenti() {
-		return alimentoRepository.findAll();
+		return alimentoServiceImpl.getAllAlimenti();
 	}
 
 	@GET
 	@Path("/alimenti/{id}")
 	@Produces("application/json")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
 	public ResponseEntity<Alimento> getAlimento(@PathParam(value = "id") int id) {
-		Alimento alimento = new Alimento();
-		try {
-			alimento = alimentoRepository.findById(id)
-					.orElseThrow(() -> new ResourceNotFoundException("Alimento not found :: " + id));
-		} catch (ResourceNotFoundException e) {
-			e.printStackTrace();
-		}
+		Alimento alimento = alimentoServiceImpl.getAlimento(id);
 		return ResponseEntity.ok().body(alimento);
 	}
 
@@ -59,47 +55,33 @@ public class AlimentoResource {
 	@Consumes("application/json")
 	@Path("/alimenti")
 	@PostMapping("/alimenti")
+	@PreAuthorize("hasRole('ADMIN')")	
+
 	public Alimento createAlimento(Alimento alimento) {
-		return alimentoRepository.save(alimento);
+		
+		return alimentoServiceImpl.createAlimento(alimento);
 	}
 
 	@PUT
 	@Produces("application/json")
 	@Consumes("application/json")
 	@Path("/alimenti/{id}")
+	@PreAuthorize("hasRole('ADMIN')")	
 	public ResponseEntity<Alimento> updateAlimento(@PathParam(value = "id") int id,
 			@Valid @RequestBody Alimento alimentoUpdate) throws ResourceNotFoundException {
-		Alimento alimento = new Alimento();
-		try {
-			alimento = alimentoRepository.findById(id)
-					.orElseThrow(() -> new ResourceNotFoundException("Alimento not found :: " + id));
-		} catch (ResourceNotFoundException e) {
-			e.printStackTrace();
-		}
-
-		alimento.setNome(alimentoUpdate.getNome());
-		alimento.setDescrizione(alimentoUpdate.getDescrizione());
-		alimento.setGrassi(alimentoUpdate.getGrassi());
-		alimento.setProteine(alimentoUpdate.getProteine());
-		alimento.setCarboidrati(alimentoUpdate.getCarboidrati());
-		final Alimento alimentoSave = alimentoRepository.save(alimento);
-		return ResponseEntity.ok(alimentoSave);
+		
+		Alimento alimento = alimentoServiceImpl.updateAlimento(id, alimentoUpdate);		
+		return ResponseEntity.ok(alimento);
 	}
 
 	@DELETE
 	@Path("/alimenti/{id}")
 	@Produces("application/json")
 	@Consumes("application/json")
+	@PreAuthorize("hasRole('ADMIN')")	
 	public Map<String, Boolean> deleteAlimento(@PathParam(value = "id") int id) throws ResourceNotFoundException {
-		Alimento alimento = new Alimento();
-		try {
-			alimento = alimentoRepository.findById(id)
-					.orElseThrow(() -> new ResourceNotFoundException("Alimento not found :: " + id));
-		} catch (ResourceNotFoundException e) {
-			e.printStackTrace();
-		}
-
-		alimentoRepository.delete(alimento);
+		
+		alimentoServiceImpl.deleteAlimento(id);
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("deleted", Boolean.TRUE);
 		return response;

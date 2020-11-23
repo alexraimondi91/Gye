@@ -10,6 +10,7 @@ import com.MWT.webApi.gym.XmlConvert.DietaXMLConvert;
 import com.MWT.webApi.gym.business.DietaService;
 import com.MWT.webApi.gym.model.Alimento;
 import com.MWT.webApi.gym.model.Dieta;
+import com.MWT.webApi.gym.model.Utente;
 import com.MWT.webApi.gym.repository.DietaRepository;
 import com.your_company.dieta.TipoDieta;
 
@@ -25,9 +26,9 @@ public class DietaServiceImpl implements DietaService {
 	private DietaXMLConvert dietaConvert;
 
 	@Override
-	public TipoDieta getDieta(int idUser) {
+	public TipoDieta getDieta(Utente utente) {
 
-		Dieta dieta = dietaRepository.findByIdUtente(idUser);
+		Dieta dieta = dietaRepository.findByUtente(utente);
 
 		if (dieta != null) {
 			return dietaConvert.convert(dieta);
@@ -37,16 +38,13 @@ public class DietaServiceImpl implements DietaService {
 	}
 	
 	@Override
-	public List<Alimento> getAlimenti(int idUser) {
+	public List<Alimento> getAlimenti(Utente utente) {
 		
 		List<Alimento> alimenti = new ArrayList<Alimento>();
-
-		Dieta dieta = dietaRepository.findByIdUtente(idUser);
+		Dieta dieta = dietaRepository.findByUtente(utente);
 
 		if (dieta != null) {
-			alimenti = dieta.getAlimenti();
-			
-			return alimenti;
+			return alimenti = dieta.getAlimenti();
 		}
 
 		return null;

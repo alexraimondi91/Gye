@@ -3,12 +3,13 @@ package com.MWT.webApi.gym.business;
 import java.util.List;
 
 import com.MWT.webApi.gym.model.Alimento;
+import com.MWT.webApi.gym.model.Utente;
 import com.your_company.dieta.TipoDieta;
 
 public interface DietaService {
 	
-	public TipoDieta getDieta (int idUser);
+	TipoDieta getDieta (Utente utente);
 
-	List<Alimento> getAlimenti(int idUser);
+	List<Alimento> getAlimenti(Utente utente);
 
 }

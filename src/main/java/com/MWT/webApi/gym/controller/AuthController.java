@@ -1,4 +1,4 @@
-package com.MWT.webApi.gym.resource;
+package com.MWT.webApi.gym.controller;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

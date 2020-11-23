@@ -50,7 +50,7 @@ public class DietaXMLConvert {
 		dietaXML.setDataInserimento(xmlDataInserimento);
 		dietaXML.setDataScadenza(xmlDataFine);
 		dietaXML.setId(dieta.getId());
-		dietaXML.setIdUtente((dieta.getIdUtente()));
+		dietaXML.setIdUtente((dieta.getId()));
 		dietaXML.setInfo(dieta.getInfo());
 		dietaXML.setNome(dieta.getNome());
 		dietaXML.setKcal(dieta.getKcal());

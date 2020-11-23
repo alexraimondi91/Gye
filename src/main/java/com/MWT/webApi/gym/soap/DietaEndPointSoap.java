@@ -12,7 +12,9 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 import com.MWT.webApi.gym.XmlConvert.AlimentoXMLConvert;
 import com.MWT.webApi.gym.businessImpl.DietaServiceImpl;
+import com.MWT.webApi.gym.businessImpl.UtenteServiceImpl;
 import com.MWT.webApi.gym.model.Alimento;
+import com.MWT.webApi.gym.model.Utente;
 import com.your_company.dieta.GetDietaPerUtenteRequest;
 import com.your_company.dieta.GetDietaPerUtenteResponse;
 
@@ -31,6 +33,9 @@ public class DietaEndPointSoap {
 	private DietaServiceImpl dietaServiceImpl;
 	
 	@Autowired
+	private UtenteServiceImpl utenteServiceImpl;
+	
+	@Autowired
 	private AlimentoXMLConvert alimentoXMLConvert;
 
 
@@ -38,19 +43,18 @@ public class DietaEndPointSoap {
 
 	@ResponsePayload
 	public GetDietaPerUtenteResponse GetDietaPerUtenteRequest(@RequestPayload GetDietaPerUtenteRequest idUtente) {
+		Utente utente = utenteServiceImpl.getUtente(idUtente.getIdUtente()) ;
 		ObjectFactory factory = new ObjectFactory();
 		GetDietaPerUtenteResponse response = factory.createGetDietaPerUtenteResponse();
-		TipoDieta found = dietaServiceImpl.getDieta(idUtente.getIdUtente());
-		List<TipoAlimento> tipoAlimenti = found.getAlimenti();
-		List<Alimento> listalimenti = dietaServiceImpl.getAlimenti(idUtente.getIdUtente());
+		TipoDieta found = dietaServiceImpl.getDieta(utente);
+		List<Alimento> listalimenti = dietaServiceImpl.getAlimenti(utente);
 
 		for (Alimento alimento : listalimenti) {
 			found.getAlimenti().add(alimentoXMLConvert.convert(alimento));
 		}
 		
 		response.setDieta(found);
-		
-		System.out.println("\n\n\n" + tipoAlimenti + "\n\n\n");
+
 		return response;
 	}
 

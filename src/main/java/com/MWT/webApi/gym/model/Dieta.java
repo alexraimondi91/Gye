@@ -48,8 +48,6 @@ public class Dieta {
 	public int kcal;	
     @ManyToOne(fetch = FetchType.LAZY)
     private Utente utente;
-	@Column(name = "id_utente") //da eliminare dopo aver provato la soap action
-	public int idUtente;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "dieta_alimento", joinColumns = 
