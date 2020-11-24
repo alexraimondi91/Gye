@@ -42,8 +42,7 @@ public class SchedaEsercizio {
 	    )
     private List<Utente> utenti;
 	
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "esercizio_id")
+	@OneToMany(fetch = FetchType.EAGER)
     private List<Esercizio> esercizi;
 
 }

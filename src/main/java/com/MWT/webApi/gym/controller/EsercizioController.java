@@ -21,69 +21,68 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.MWT.webApi.gym.businessImpl.AlimentoServiceImpl;
+import com.MWT.webApi.gym.businessImpl.EsercizioServiceImpl;
 import com.MWT.webApi.gym.exception.ResourceNotFoundException;
-import com.MWT.webApi.gym.model.Alimento;
-import com.MWT.webApi.gym.repository.AlimentoRepository;
+import com.MWT.webApi.gym.model.Esercizio;
 
 @Component
 @Path("/api/v1")
-public class AlimentoController {
+public class EsercizioController {
 	
 	@Autowired
-	private AlimentoServiceImpl alimentoServiceImpl;
+	private EsercizioServiceImpl esercizioServiceImpl;
 
 	@GET
-	@Path("/alimenti")
+	@Path("/esercizi")
 	@Produces("application/json")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
-	public List<Alimento> getAllAlimenti() {
-		return alimentoServiceImpl.getAllAlimenti();
+	public List<Esercizio> getAllEsercizi() {
+		return esercizioServiceImpl.getAllEsercizi();
 	}
 
 	@GET
-	@Path("/alimenti/{id}")
+	@Path("/esercizi/{id}")
 	@Produces("application/json")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
-	public ResponseEntity<Alimento> getAlimento(@PathParam(value = "id") int id) {
-		Alimento alimento = alimentoServiceImpl.getAlimento(id);
-		return ResponseEntity.ok().body(alimento);
+	public ResponseEntity<Esercizio> getEsercizio(@PathParam(value = "id") int id) {
+		Esercizio esercizio = esercizioServiceImpl.getEsercizio(id);
+		return ResponseEntity.ok().body(esercizio);
 	}
 
 	@POST
 	@Produces("application/json")
 	@Consumes("application/json")
-	@Path("/alimenti")
-	@PostMapping("/alimenti")
+	@Path("/esercizi")
+	@PostMapping("/esercizi")
 	@PreAuthorize("hasRole('ADMIN')")	
 
-	public Alimento createAlimento(Alimento alimento) {
+	public Esercizio createEsercizio(Esercizio esercizio) {
 		
-		return alimentoServiceImpl.createAlimento(alimento);
+		return esercizioServiceImpl.createEsercizio(esercizio);
 	}
 
 	@PUT
 	@Produces("application/json")
 	@Consumes("application/json")
-	@Path("/alimenti/{id}")
+	@Path("/esercizi/{id}")
 	@PreAuthorize("hasRole('ADMIN')")	
-	public ResponseEntity<Alimento> updateAlimento(@PathParam(value = "id") int id,
-			@Valid @RequestBody Alimento alimentoUpdate) throws ResourceNotFoundException {
+	public ResponseEntity<Esercizio> updateAlimento(@PathParam(value = "id") int id,
+			@Valid @RequestBody Esercizio esercizioUpdate) throws ResourceNotFoundException {
 		
-		Alimento alimento = alimentoServiceImpl.updateAlimento(id, alimentoUpdate);		
-		return ResponseEntity.ok(alimento);
+		Esercizio esercizio = esercizioServiceImpl.updateEsercizio(id, esercizioUpdate);		
+		return ResponseEntity.ok(esercizio);
 	}
 
 	@DELETE
-	@Path("/alimenti/{id}")
+	@Path("/esercizi/{id}")
 	@Produces("application/json")
 	@Consumes("application/json")
 	@PreAuthorize("hasRole('ADMIN')")	
-	public Map<String, Boolean> deleteAlimento(@PathParam(value = "id") int id) throws ResourceNotFoundException {
+	public Map<String, Boolean> deleteEsercizio(@PathParam(value = "id") int id) throws ResourceNotFoundException {
 		
-		boolean deleted = alimentoServiceImpl.deleteAlimento(id);
+		boolean delete = esercizioServiceImpl.deleteEsercizio(id);
 		Map<String, Boolean> response = new HashMap<>();
-		response.put("deleted", deleted);
+		response.put("deleted", delete);
 		return response;
 	}
 

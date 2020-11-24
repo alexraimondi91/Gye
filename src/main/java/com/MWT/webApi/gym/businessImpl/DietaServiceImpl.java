@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.MWT.webApi.gym.XmlConvert.DietaXMLConvert;
 import com.MWT.webApi.gym.business.DietaService;
+import com.MWT.webApi.gym.exception.ResourceNotFoundException;
 import com.MWT.webApi.gym.model.Alimento;
 import com.MWT.webApi.gym.model.Dieta;
 import com.MWT.webApi.gym.model.Utente;
@@ -48,6 +49,73 @@ public class DietaServiceImpl implements DietaService {
 		}
 
 		return null;
+	}
+
+	@Override
+	public List<Dieta> getAllDieta() {
+		
+		return dietaRepository.findAll();
+
+	}
+
+	@Override
+	public Dieta getDieta(int id) {
+		
+		Dieta dieta = new Dieta();
+		try {
+			dieta = dietaRepository.findById(id)
+					.orElseThrow(() -> new ResourceNotFoundException("Dieta not found :: " + id));
+		} catch (ResourceNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return dieta;
+		
+	}
+
+	@Override
+	public Dieta createDieta(Dieta dieta) {
+		
+		return dietaRepository.save(dieta);
+	}
+
+	@Override
+	public Dieta updateDieta(int id, Dieta dietaUpdate) {
+		
+		Dieta dieta = new Dieta();
+		try {
+			dieta = dietaRepository.findById(id)
+					.orElseThrow(() -> new ResourceNotFoundException("Dieta not found :: " + id));
+		} catch (ResourceNotFoundException e) {
+			e.printStackTrace();
+		}
+		dieta.setId(id);
+		dieta.setAlimenti(dietaUpdate.getAlimenti());
+		dieta.setDataScadenza(dietaUpdate.getDataScadenza());
+		dieta.setInfo(dietaUpdate.getInfo());
+		dieta.setKcal(dietaUpdate.getKcal());
+		dieta.setNome(dietaUpdate.getNome());
+		dieta.setUtente(dietaUpdate.getUtente());
+		
+		final Dieta dietaSave = dietaRepository.save(dieta);
+		
+		return dietaSave;
+
+	}
+
+	@Override
+	public void deleteDieta(int id) {
+		
+		Dieta dieta = new Dieta();
+		try {
+			dieta = dietaRepository.findById(id)
+					.orElseThrow(() -> new ResourceNotFoundException("Dieta not found :: " + id));
+		} catch (ResourceNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		dietaRepository.delete(dieta);
+		
 	}
 	
 	
