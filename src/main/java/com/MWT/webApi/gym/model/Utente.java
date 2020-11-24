@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -52,9 +53,11 @@ public class Utente {
 				inverseJoinColumns = @JoinColumn(name = "ruoli_id"))
 	private List<Ruoli> roles;
 	
+	@JsonManagedReference
 	@ManyToOne(fetch = FetchType.LAZY , optional = true)
 	private SchedaEsercizio schedaEsercizio;
 	
+	@JsonManagedReference
 	@OneToMany(
 	        mappedBy = "utente",
 	        cascade = CascadeType.ALL,

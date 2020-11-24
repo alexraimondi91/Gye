@@ -18,6 +18,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,7 +39,6 @@ public class Dieta {
 	@CreationTimestamp
 	@Column(name = "data_inserimento")
 	private Date dataInserimento;	
-	@CreationTimestamp
 	@Column(name = "data_scadenza")
 	private Date dataScadenza;	
 	@Column(name = "info")
@@ -46,7 +47,9 @@ public class Dieta {
 	private String nome;
 	@Column(name = "kcal")
 	public int kcal;	
-    @ManyToOne(fetch = FetchType.LAZY)
+	
+	@JsonBackReference
+	@ManyToOne(fetch = FetchType.LAZY)
     private Utente utente;
 	
 	@ManyToMany(fetch = FetchType.EAGER)

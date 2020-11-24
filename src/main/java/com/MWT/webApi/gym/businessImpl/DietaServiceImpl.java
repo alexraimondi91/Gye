@@ -104,17 +104,21 @@ public class DietaServiceImpl implements DietaService {
 	}
 
 	@Override
-	public void deleteDieta(int id) {
+	public boolean deleteDieta(int id) {
 		
 		Dieta dieta = new Dieta();
+		boolean delete = true;
 		try {
 			dieta = dietaRepository.findById(id)
 					.orElseThrow(() -> new ResourceNotFoundException("Dieta not found :: " + id));
+			dietaRepository.delete(dieta);
+
 		} catch (ResourceNotFoundException e) {
 			e.printStackTrace();
-		}
+			delete = false;
+		}	
 		
-		dietaRepository.delete(dieta);
+		return delete;
 		
 	}
 	

@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,6 +38,7 @@ public class SchedaEsercizio {
 	@Column(name = "data_inserimento")
 	private Date dataInserimento;
 	
+	@JsonBackReference
 	@OneToMany(
 	        mappedBy = "schedaEsercizio",
 	        cascade = CascadeType.ALL

@@ -18,7 +18,7 @@ public interface DietaService {
 		
 	Dieta updateDieta( int id, Dieta dietaUpdate);
 	
-	void deleteDieta(int id);
+	boolean deleteDieta(int id);
 	
 	TipoDieta getDieta (Utente utente);
 
