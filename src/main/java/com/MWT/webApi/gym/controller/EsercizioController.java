@@ -41,7 +41,7 @@ public class EsercizioController {
 	}
 
 	@GET
-	@Path("/esercizi/{id}")
+	@Path("/esercizio/{id}")
 	@Produces("application/json")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
 	public ResponseEntity<Esercizio> getEsercizio(@PathParam(value = "id") int id) {
@@ -52,8 +52,8 @@ public class EsercizioController {
 	@POST
 	@Produces("application/json")
 	@Consumes("application/json")
-	@Path("/esercizi")
-	@PostMapping("/esercizi")
+	@Path("/esercizio")
+	@PostMapping("/esercizio")
 	@PreAuthorize("hasRole('ADMIN')")	
 
 	public Esercizio createEsercizio(Esercizio esercizio) {
@@ -64,7 +64,7 @@ public class EsercizioController {
 	@PUT
 	@Produces("application/json")
 	@Consumes("application/json")
-	@Path("/esercizi/{id}")
+	@Path("/esercizio/{id}")
 	@PreAuthorize("hasRole('ADMIN')")	
 	public ResponseEntity<Esercizio> updateAlimento(@PathParam(value = "id") int id,
 			@Valid @RequestBody Esercizio esercizioUpdate) throws ResourceNotFoundException {
@@ -74,7 +74,7 @@ public class EsercizioController {
 	}
 
 	@DELETE
-	@Path("/esercizi/{id}")
+	@Path("/esercizio/{id}")
 	@Produces("application/json")
 	@Consumes("application/json")
 	@PreAuthorize("hasRole('ADMIN')")	

@@ -41,7 +41,7 @@ public class SchedaEsercizioController {
 	}
 
 	@GET
-	@Path("/scheda-esercizi/{id}")
+	@Path("/scheda-esercizio/{id}")
 	@Produces("application/json")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
 	public ResponseEntity<SchedaEsercizio> getSchedaEsercizio(@PathParam(value = "id") int id) {
@@ -52,7 +52,7 @@ public class SchedaEsercizioController {
 	@POST
 	@Produces("application/json")
 	@Consumes("application/json")
-	@Path("/scheda-esercizi")
+	@Path("/scheda-esercizio")
 	@PostMapping("/scheda-esercizi")
 	@PreAuthorize("hasRole('ADMIN')")	
 
@@ -64,7 +64,7 @@ public class SchedaEsercizioController {
 	@PUT
 	@Produces("application/json")
 	@Consumes("application/json")
-	@Path("/scheda-esercizi/{id}")
+	@Path("/scheda-esercizio/{id}")
 	@PreAuthorize("hasRole('ADMIN')")	
 	public ResponseEntity<SchedaEsercizio> updateSchedaEsercizio(@PathParam(value = "id") int id,
 			@Valid @RequestBody SchedaEsercizio schedaEsercizioUpdate) throws ResourceNotFoundException {
@@ -74,7 +74,7 @@ public class SchedaEsercizioController {
 	}
 
 	@DELETE
-	@Path("/scheda-esercizi/{id}")
+	@Path("/scheda-esercizio/{id}")
 	@Produces("application/json")
 	@Consumes("application/json")
 	@PreAuthorize("hasRole('ADMIN')")	

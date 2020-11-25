@@ -42,7 +42,7 @@ public class AlimentoController {
 	}
 
 	@GET
-	@Path("/alimenti/{id}")
+	@Path("/alimento/{id}")
 	@Produces("application/json")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
 	public ResponseEntity<Alimento> getAlimento(@PathParam(value = "id") int id) {
@@ -53,8 +53,8 @@ public class AlimentoController {
 	@POST
 	@Produces("application/json")
 	@Consumes("application/json")
-	@Path("/alimenti")
-	@PostMapping("/alimenti")
+	@Path("/alimento")
+	@PostMapping("/alimento")
 	@PreAuthorize("hasRole('ADMIN')")	
 
 	public Alimento createAlimento(Alimento alimento) {
@@ -65,7 +65,7 @@ public class AlimentoController {
 	@PUT
 	@Produces("application/json")
 	@Consumes("application/json")
-	@Path("/alimenti/{id}")
+	@Path("/alimento/{id}")
 	@PreAuthorize("hasRole('ADMIN')")	
 	public ResponseEntity<Alimento> updateAlimento(@PathParam(value = "id") int id,
 			@Valid @RequestBody Alimento alimentoUpdate) throws ResourceNotFoundException {
@@ -75,7 +75,7 @@ public class AlimentoController {
 	}
 
 	@DELETE
-	@Path("/alimenti/{id}")
+	@Path("/alimento/{id}")
 	@Produces("application/json")
 	@Consumes("application/json")
 	@PreAuthorize("hasRole('ADMIN')")	

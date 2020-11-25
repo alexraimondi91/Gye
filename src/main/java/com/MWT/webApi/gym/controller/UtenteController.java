@@ -60,23 +60,23 @@ public class UtenteController {
 	}
 	
 	@GET
-	@Path("/diete/utenti/{id}")
+	@Path("/diete/utente/{id}")
 	@Produces("application/json")
-	@PreAuthorize("hasRole('ADMIN')")	
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
 	public List<Dieta> getDietePerUtente(@PathParam(value = "id") int id) {
 		return utenteServiceImpl.getDieteUtente(id);
 	}
 	
 	@GET
-	@Path("/scheda/utenti/{id}")
+	@Path("/schede/utente/{id}")
 	@Produces("application/json")
-	@PreAuthorize("hasRole('ADMIN')")	
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
 	public List<SchedaEsercizio> getSchedaPerUtente(@PathParam(value = "id") int id) {
 		return utenteServiceImpl.getSchedeUtente(id);
 	}
 
 	@GET
-	@Path("/utenti/{id}")
+	@Path("/utente/{id}")
 	@Produces("application/json")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
 	public ResponseEntity<Utente> getUtente(@PathParam(value = "id") int id) {
@@ -87,7 +87,7 @@ public class UtenteController {
 	@PUT
 	@Produces("application/json")
 	@Consumes("application/json")
-	@Path("/utenti/{id}")
+	@Path("/utente/{id}")
 	@PreAuthorize("hasRole('ADMIN')")	
 	public ResponseEntity<Utente> updateUtente(@PathParam(value = "id") int id,
 			@Valid @RequestBody SignupRequest signupRequest) throws ResourceNotFoundException {
@@ -98,7 +98,7 @@ public class UtenteController {
 
 
 	@DELETE
-	@Path("/utenti/{id}")
+	@Path("/utente/{id}")
 	@Produces("application/json")
 	@Consumes("application/json")
 	@PreAuthorize("hasRole('ADMIN')")	

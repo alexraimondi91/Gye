@@ -43,7 +43,7 @@ public class DietaController {
 	}
 
 	@GET
-	@Path("/diete/{id}")
+	@Path("/dieta/{id}")
 	@Produces("application/json")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
 	public ResponseEntity<Dieta> getDieta(@PathParam(value = "id") int id) {
@@ -54,7 +54,7 @@ public class DietaController {
 	@POST
 	@Produces("application/json")
 	@Consumes("application/json")
-	@Path("/diete")
+	@Path("/dieta")
 	@PostMapping("/diete")
 	@PreAuthorize("hasRole('ADMIN')")	
 
@@ -66,7 +66,7 @@ public class DietaController {
 	@PUT
 	@Produces("application/json")
 	@Consumes("application/json")
-	@Path("/diete/{id}")
+	@Path("/dieta/{id}")
 	@PreAuthorize("hasRole('ADMIN')")	
 	public ResponseEntity<Dieta> updateDieta(@PathParam(value = "id") int id,
 			@Valid @RequestBody Dieta dietaUpdate) throws ResourceNotFoundException {
