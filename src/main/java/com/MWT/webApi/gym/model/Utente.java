@@ -57,9 +57,14 @@ public class Utente {
 				inverseJoinColumns = @JoinColumn(name = "ruoli_id"))
 	private List<Ruolo> roles;
 	
-	
-	@ManyToOne(fetch = FetchType.LAZY , optional = true)
-	private SchedaEsercizio schedaEsercizio;
+	@JsonManagedReference
+	@OneToMany(
+	        mappedBy = "utente",
+	        cascade = CascadeType.ALL,
+	        orphanRemoval = true
+	        
+	    )
+	private List<SchedaEsercizio> schedaEsercizi;
 	
 	@JsonManagedReference
 	@OneToMany(

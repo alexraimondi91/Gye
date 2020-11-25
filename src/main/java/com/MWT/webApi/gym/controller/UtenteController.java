@@ -25,6 +25,7 @@ import com.MWT.webApi.gym.exception.ResourceNotFoundException;
 import com.MWT.webApi.gym.model.Dieta;
 import com.MWT.webApi.gym.model.SchedaEsercizio;
 import com.MWT.webApi.gym.model.SignupRequest;
+import com.MWT.webApi.gym.model.TipiRuoli;
 import com.MWT.webApi.gym.model.Utente;
 
 @Component
@@ -43,11 +44,35 @@ public class UtenteController {
 	}
 	
 	@GET
+	@Path("/utenti/user")
+	@Produces("application/json")
+	@PreAuthorize("hasRole('ADMIN')")	
+	public List<Utente> getAllUtentiRuoloUser() {
+		return utenteServiceImpl.getAllUtenteRole(TipiRuoli.ROLE_USER);
+	}
+	
+	@GET
+	@Path("/utenti/admin")
+	@Produces("application/json")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
+	public List<Utente> getAllUtentiRuoloAdmin() {
+		return utenteServiceImpl.getAllUtenteRole(TipiRuoli.ROLE_ADMIN);
+	}
+	
+	@GET
 	@Path("/diete/utenti/{id}")
 	@Produces("application/json")
 	@PreAuthorize("hasRole('ADMIN')")	
 	public List<Dieta> getDietePerUtente(@PathParam(value = "id") int id) {
 		return utenteServiceImpl.getDieteUtente(id);
+	}
+	
+	@GET
+	@Path("/scheda/utenti/{id}")
+	@Produces("application/json")
+	@PreAuthorize("hasRole('ADMIN')")	
+	public List<SchedaEsercizio> getSchedaPerUtente(@PathParam(value = "id") int id) {
+		return utenteServiceImpl.getSchedeUtente(id);
 	}
 
 	@GET

@@ -20,11 +20,13 @@ import com.MWT.webApi.gym.model.Dieta;
 import com.MWT.webApi.gym.model.Esercizio;
 import com.MWT.webApi.gym.model.MessageResponse;
 import com.MWT.webApi.gym.model.Ruolo;
+import com.MWT.webApi.gym.model.SchedaEsercizio;
 import com.MWT.webApi.gym.model.SignupRequest;
 import com.MWT.webApi.gym.model.TipiRuoli;
 import com.MWT.webApi.gym.model.Utente;
 import com.MWT.webApi.gym.repository.DietaRepository;
 import com.MWT.webApi.gym.repository.RuoliRepository;
+import com.MWT.webApi.gym.repository.SchedaEsercizioRepository;
 import com.MWT.webApi.gym.repository.UtenteRepository;
 
 @Service
@@ -35,6 +37,7 @@ public class UtenteServiceImpl implements UtenteService{
 	
 	@Autowired
 	private DietaRepository dietaRepository;
+
 	
 	@Autowired
 	private RuoliRepository ruoliRepository;
@@ -55,11 +58,25 @@ public class UtenteServiceImpl implements UtenteService{
 	}
 	
 	@Override
+	public List<Utente> getAllUtenteRole(TipiRuoli role) {
+		
+		return utenteRepository.findUserByRole(role);
+	}
+	
+	@Override
 	public List<Dieta> getDieteUtente(int id) {
 		
 		Utente utente =  utenteRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + id));
 		
 		return dietaRepository.findByUtente(utente);
+	}
+	
+	@Override
+	public List<SchedaEsercizio> getSchedeUtente(int id) {
+		
+		Utente utente =  utenteRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + id));
+		List<SchedaEsercizio> schedaUtente = utente.getSchedaEsercizi();
+		return schedaUtente;
 	}
 	
 	@Override
@@ -72,7 +89,6 @@ public class UtenteServiceImpl implements UtenteService{
 		user.setDataNascita(signUpRequest.getDataNascita());
 		user.setUserName(signUpRequest.getUsername());
 		user.setPassword(encoder.encode(signUpRequest.getPassword()));
-		user.setSchedaEsercizio(signUpRequest.getSchedaEsercizio());
 
 		Set<String> strRoles = signUpRequest.getRole();
 		List<Ruolo> roles = new ArrayList<>();

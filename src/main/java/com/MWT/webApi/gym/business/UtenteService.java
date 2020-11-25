@@ -6,7 +6,9 @@ import org.springframework.http.ResponseEntity;
 
 import com.MWT.webApi.gym.model.Dieta;
 import com.MWT.webApi.gym.model.Esercizio;
+import com.MWT.webApi.gym.model.SchedaEsercizio;
 import com.MWT.webApi.gym.model.SignupRequest;
+import com.MWT.webApi.gym.model.TipiRuoli;
 import com.MWT.webApi.gym.model.Utente;
 
 public interface UtenteService {
@@ -20,5 +22,9 @@ public interface UtenteService {
 	Utente updateUser(SignupRequest signUpRequest, int id);
 
 	List<Dieta> getDieteUtente(int id);
+
+	List<SchedaEsercizio> getSchedeUtente(int id);
+
+	List<Utente> getAllUtenteRole(TipiRuoli role);
 
 }
