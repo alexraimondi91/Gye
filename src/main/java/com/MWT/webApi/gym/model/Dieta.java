@@ -19,11 +19,11 @@ import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "dieta")
@@ -47,7 +47,10 @@ public class Dieta {
 	private String nome;
 	@Column(name = "kcal")
 	public int kcal;	
-	
+	@Column(name = "active")
+	public boolean active;
+
+    @ToString.Exclude()
 	@JsonBackReference
 	@ManyToOne(fetch = FetchType.LAZY)
     private Utente utente;

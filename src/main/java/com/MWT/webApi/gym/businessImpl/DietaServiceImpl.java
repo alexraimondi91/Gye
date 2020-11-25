@@ -15,8 +15,6 @@ import com.MWT.webApi.gym.model.Utente;
 import com.MWT.webApi.gym.repository.DietaRepository;
 import com.your_company.dieta.TipoDieta;
 
-
-
 @Service
 public class DietaServiceImpl implements DietaService {
 
@@ -28,24 +26,48 @@ public class DietaServiceImpl implements DietaService {
 
 	@Override
 	public TipoDieta getDieta(Utente utente) {
-
-		Dieta dieta = dietaRepository.findByUtente(utente);
-
-		if (dieta != null) {
-			return dietaConvert.convert(dieta);
+		
+		List<Dieta> diete = dietaRepository.findByUtente(utente);
+		TipoDieta tipoDieta = new TipoDieta();
+		
+		Dieta dietaActive = new Dieta();
+		for(Dieta dieta : diete) {
+			if(dieta.active) {
+				dietaActive = dieta;
+				
+			}
 		}
 
-		return null;
+		if (dietaActive != null) {		
+			
+			try {
+				
+				tipoDieta = dietaConvert.convert(dietaActive);
+				
+			}catch(Exception e){
+				return null;
+			}
+			
+		}
+
+		return tipoDieta;
+		
 	}
 	
 	@Override
 	public List<Alimento> getAlimenti(Utente utente) {
 		
 		List<Alimento> alimenti = new ArrayList<Alimento>();
-		Dieta dieta = dietaRepository.findByUtente(utente);
+		List<Dieta> diete = dietaRepository.findByUtente(utente);
+		Dieta dietaActive = new Dieta();
+		for(Dieta dieta : diete) {
+			if(dieta.active) {
+				dietaActive = dieta;
+			}
+		}
 
-		if (dieta != null) {
-			return alimenti = dieta.getAlimenti();
+		if (dietaActive != null) {
+			return alimenti = dietaActive.getAlimenti();
 		}
 
 		return null;
@@ -115,7 +137,7 @@ public class DietaServiceImpl implements DietaService {
 
 		} catch (ResourceNotFoundException e) {
 			e.printStackTrace();
-			delete = false;
+			return delete = false;
 		}	
 		
 		return delete;

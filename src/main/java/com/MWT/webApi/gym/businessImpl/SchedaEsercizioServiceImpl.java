@@ -54,7 +54,6 @@ public class SchedaEsercizioServiceImpl implements SchedaEsercizioService{
 		schedaEsercizio.setDescrizione(schedaEsercizioUpdate.getDescrizione());
 		schedaEsercizio.setEsercizi(schedaEsercizioUpdate.getEsercizi());
 		schedaEsercizio.setNome(schedaEsercizioUpdate.getNome());
-		schedaEsercizio.setUtenti(schedaEsercizioUpdate.getUtenti());
 		
         final SchedaEsercizio schedaEsercizioSave = schedaEsercizioRepository.save(schedaEsercizio);
 		
@@ -62,17 +61,23 @@ public class SchedaEsercizioServiceImpl implements SchedaEsercizioService{
 	}
 
 	@Override
-	public void deleteSchedaEsercizio(int id) {
+	public boolean deleteSchedaEsercizio(int id) {
 		
 		SchedaEsercizio schedaEsercizio = new SchedaEsercizio();
+		boolean delete = true;
 		try {
 			schedaEsercizio = schedaEsercizioRepository.findById(id)
 					.orElseThrow(() -> new ResourceNotFoundException("SchedaEsercizio not found :: " + id));
+			
+			schedaEsercizioRepository.delete(schedaEsercizio);
+
 		} catch (ResourceNotFoundException e) {
 			e.printStackTrace();
+			delete = false;
 		}
 		
-		schedaEsercizioRepository.delete(schedaEsercizio);
+		return delete;
+		
 		
 	}
 

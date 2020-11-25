@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import com.MWT.webApi.gym.controller.AlimentoController;
 import com.MWT.webApi.gym.controller.DietaController;
 import com.MWT.webApi.gym.controller.EsercizioController;
+import com.MWT.webApi.gym.controller.SchedaEsercizioController;
+import com.MWT.webApi.gym.controller.UtenteController;
 
 @Configuration
 @Component
@@ -19,7 +21,8 @@ public class JerseyConfiguration extends ResourceConfig{
 	        register(AlimentoController.class);
 	        register(EsercizioController.class);
 	        register(DietaController.class);
-
+	        register(SchedaEsercizioController.class);
+	        register(UtenteController.class);
 
 	 }
 }

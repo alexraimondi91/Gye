@@ -30,6 +30,7 @@ public class DietaXMLConvert {
 	public TipoDieta convert (Dieta dieta) {
 		
 		TipoDieta dietaXML = new TipoDieta();
+		
 
 		BeanUtils.copyProperties(dieta, dietaXML);
 		GregorianCalendar gcalInserimento = new GregorianCalendar();
@@ -50,17 +51,18 @@ public class DietaXMLConvert {
 		dietaXML.setDataInserimento(xmlDataInserimento);
 		dietaXML.setDataScadenza(xmlDataFine);
 		dietaXML.setId(dieta.getId());
-		dietaXML.setIdUtente((dieta.getId()));
+		dietaXML.setIdUtente((dieta.getUtente().getId()));
 		dietaXML.setInfo(dieta.getInfo());
 		dietaXML.setNome(dieta.getNome());
 		dietaXML.setKcal(dieta.getKcal());
+		dietaXML.setActive(dieta.isActive());
 		List<Alimento> setAlimenti = dieta.getAlimenti();
+		
+
 		List<TipoAlimento> listAlimenti = new ArrayList<TipoAlimento>();		
 		for(Alimento alimento : setAlimenti) {
 			listAlimenti.add(alimentoXMLConvert.convert(alimento));
-		}
-		  
-		//dietaXML.setAlimenti(listAlimenti);		
+		}	
 		return dietaXML;
 		
 	}

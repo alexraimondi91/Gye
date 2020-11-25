@@ -24,22 +24,6 @@
                     <xsd:element maxOccurs="1" minOccurs="1" name="carboidrati" type="xsd:int"/>
                 </xsd:sequence>
             </xsd:complexType>
-            <xsd:complexType name="TipoDieta">
-                <xsd:sequence>
-                    <xsd:element maxOccurs="1" minOccurs="1" name="id" type="xsd:int"/>
-                    <xsd:element maxOccurs="1" minOccurs="1" name="dataInserimento" type="xsd:date"/>
-                    <xsd:element maxOccurs="1" minOccurs="1" name="dataScadenza" type="xsd:date"/>
-                    <xsd:element maxOccurs="1" minOccurs="1" name="info" type="xsd:string"/>
-                    <xsd:element maxOccurs="1" minOccurs="1" name="nome" type="xsd:string"/>
-                    <xsd:element maxOccurs="1" minOccurs="1" name="kcal" type="xsd:int"/>
-                    <xsd:element maxOccurs="1" minOccurs="1" name="idUtente" type="xsd:int"/>
-                    <xsd:element
-                        maxOccurs="unbounded"
-                        minOccurs="1"
-                        name="alimenti"
-                        type="xsd1:TipoAlimento"/>
-                </xsd:sequence>
-            </xsd:complexType>
             <xsd:element name="GetDietaPerUtenteResponse">
                 <xsd:complexType>
                     <xsd:sequence>
@@ -54,12 +38,45 @@
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
+            <xsd:complexType name="TipoErrore">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="codice" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="descrizione" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="ElementoErrore">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="1" minOccurs="1" name="errore" type="xsd1:TipoErrore"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:complexType name="TipoDieta">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="id" type="xsd:int"/>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="dataInserimento" type="xsd:date"/>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="dataScadenza" type="xsd:date"/>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="info" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="nome" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="kcal" type="xsd:int"/>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="active" type="xsd:boolean"/>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="idUtente" type="xsd:int"/>
+                    <xsd:element
+                        maxOccurs="unbounded"
+                        minOccurs="1"
+                        name="alimenti"
+                        type="xsd1:TipoAlimento"/>
+                </xsd:sequence>
+            </xsd:complexType>
         </xsd:schema>
     </wsdl:types>
     <wsdl:message name="GetDietaPerUtenteRequest">
         <wsdl:part
             element="xsd1:GetDietaPerUtenteRequest"
             name="GetDietaPerUtenteRequest"/>
+    </wsdl:message>
+    <wsdl:message name="Errore">
+        <wsdl:part element="xsd1:ElementoErrore" name="errore"/>
     </wsdl:message>
     <wsdl:message name="GetDietaPerUtenteResponse">
         <wsdl:part
@@ -70,6 +87,7 @@
         <wsdl:operation name="getDietaPerUtente">
             <wsdl:input message="tns:GetDietaPerUtenteRequest"/>
             <wsdl:output message="tns:GetDietaPerUtenteResponse"/>
+            <wsdl:fault message="tns:Errore" name="errore"/>
         </wsdl:operation>
     </wsdl:portType>
     <wsdl:binding name="dietaBinding" type="tns:dietaPortType">
@@ -82,6 +100,9 @@
             <wsdl:output>
                 <soap:body parts="GetDietaPerUtenteResponse" use="literal"/>
             </wsdl:output>
+            <wsdl:fault name="errore">
+                <soap:fault name="errore" use="literal"/>
+            </wsdl:fault>
         </wsdl:operation>
     </wsdl:binding>
     <wsdl:service name="dieta">

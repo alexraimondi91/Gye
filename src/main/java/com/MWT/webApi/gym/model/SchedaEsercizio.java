@@ -15,6 +15,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +28,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class SchedaEsercizio {
 	
 	@Id
@@ -37,13 +41,6 @@ public class SchedaEsercizio {
 	private String nome;
 	@Column(name = "data_inserimento")
 	private Date dataInserimento;
-	
-	@JsonBackReference
-	@OneToMany(
-	        mappedBy = "schedaEsercizio",
-	        cascade = CascadeType.ALL
-	    )
-    private List<Utente> utenti;
 	
 	@OneToMany(fetch = FetchType.EAGER)
     private List<Esercizio> esercizi;

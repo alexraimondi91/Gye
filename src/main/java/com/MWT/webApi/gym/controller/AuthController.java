@@ -25,7 +25,7 @@ import com.MWT.webApi.gym.jwt.JwtUtils;
 import com.MWT.webApi.gym.model.JwtResponse;
 import com.MWT.webApi.gym.model.LoginRequest;
 import com.MWT.webApi.gym.model.MessageResponse;
-import com.MWT.webApi.gym.model.Ruoli;
+import com.MWT.webApi.gym.model.Ruolo;
 import com.MWT.webApi.gym.model.SignupRequest;
 import com.MWT.webApi.gym.model.TipiRuoli;
 import com.MWT.webApi.gym.model.Utente;
@@ -90,27 +90,27 @@ public class AuthController {
 		// Create new user's account
 		Utente user = new Utente(0,signUpRequest.getNome(),signUpRequest.getCognome(),signUpRequest.getEmail(), signUpRequest.getDataNascita(), signUpRequest.getUsername(), 
 							 
-							 encoder.encode(signUpRequest.getPassword()), null, null, null);
+							 encoder.encode(signUpRequest.getPassword()), null, signUpRequest.getSchedaEsercizio(), null);
 
 		Set<String> strRoles = signUpRequest.getRole();
-		List<Ruoli> roles = new ArrayList<>();
+		List<Ruolo> roles = new ArrayList<>();
 
 		if (strRoles == null) {
-			Ruoli userRole = ruoliRepository.findByNome(TipiRuoli.ROLE_USER)
+			Ruolo userRole = ruoliRepository.findByNome(TipiRuoli.ROLE_USER)
 					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 			roles.add(userRole);
 		} else {
 			strRoles.forEach(role -> {
 				switch (role) {
 				case "admin":
-					Ruoli adminRole = ruoliRepository.findByNome(TipiRuoli.ROLE_ADMIN)
+					Ruolo adminRole = ruoliRepository.findByNome(TipiRuoli.ROLE_ADMIN)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 					roles.add(adminRole);
 
 					break;
 				
 				default:
-					Ruoli userRole = ruoliRepository.findByNome(TipiRuoli.ROLE_USER)
+					Ruolo userRole = ruoliRepository.findByNome(TipiRuoli.ROLE_USER)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 					roles.add(userRole);
 				}

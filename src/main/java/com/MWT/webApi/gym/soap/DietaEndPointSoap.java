@@ -15,12 +15,14 @@ import com.MWT.webApi.gym.businessImpl.DietaServiceImpl;
 import com.MWT.webApi.gym.businessImpl.UtenteServiceImpl;
 import com.MWT.webApi.gym.model.Alimento;
 import com.MWT.webApi.gym.model.Utente;
+import com.your_company.dieta.ElementoErrore;
 import com.your_company.dieta.GetDietaPerUtenteRequest;
 import com.your_company.dieta.GetDietaPerUtenteResponse;
 
 import com.your_company.dieta.ObjectFactory;
 import com.your_company.dieta.TipoAlimento;
 import com.your_company.dieta.TipoDieta;
+import com.your_company.dieta.TipoErrore;
 
 
 
@@ -42,19 +44,36 @@ public class DietaEndPointSoap {
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "GetDietaPerUtenteRequest")
 
 	@ResponsePayload
-	public GetDietaPerUtenteResponse GetDietaPerUtenteRequest(@RequestPayload GetDietaPerUtenteRequest idUtente) {
+	public GetDietaPerUtenteResponse GetDietaPerUtenteRequest(@RequestPayload GetDietaPerUtenteRequest idUtente) throws DietaNotFoundException {
+		
+
 		Utente utente = utenteServiceImpl.getUtente(idUtente.getIdUtente()) ;
 		ObjectFactory factory = new ObjectFactory();
 		GetDietaPerUtenteResponse response = factory.createGetDietaPerUtenteResponse();
-		TipoDieta found = dietaServiceImpl.getDieta(utente);
-		List<Alimento> listalimenti = dietaServiceImpl.getAlimenti(utente);
+		TipoDieta found = new TipoDieta();
 
-		for (Alimento alimento : listalimenti) {
-			found.getAlimenti().add(alimentoXMLConvert.convert(alimento));
+		if(dietaServiceImpl.getDieta(utente) == null) {		
+			throw new DietaNotFoundException("non è stato trovata nessuna dieta attiva per questo utente!");			
 		}
+		else {			
+			
+			found = dietaServiceImpl.getDieta(utente);
+			
+			List<Alimento> listalimenti = dietaServiceImpl.getAlimenti(utente);
+			for (Alimento alimento : listalimenti) {
+				found.getAlimenti().add(alimentoXMLConvert.convert(alimento));
+			}
+				
+			response.setDieta(found);
+		}		
 		
-		response.setDieta(found);
-
+		
+		return mapDietaDetails(response);
+	}
+	
+	private GetDietaPerUtenteResponse mapDietaDetails(GetDietaPerUtenteResponse getDietaPerUtenteResponse) {
+		GetDietaPerUtenteResponse response = new GetDietaPerUtenteResponse();
+		response.setDieta(getDietaPerUtenteResponse.getDieta());
 		return response;
 	}
 

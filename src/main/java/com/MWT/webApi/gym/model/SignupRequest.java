@@ -32,6 +32,8 @@ public class SignupRequest {
     @NotBlank
 	private String nome;
 	
+	private SchedaEsercizio schedaEsercizio;
+	
     @NotBlank
 	private String cognome;
 	

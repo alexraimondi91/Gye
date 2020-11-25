@@ -15,6 +15,6 @@ public interface SchedaEsercizioService {
 		
 	SchedaEsercizio updateSchedaEsercizio( int id, SchedaEsercizio schedaEsercizioUpdate);
 	
-	void deleteSchedaEsercizio(int id);
+	boolean deleteSchedaEsercizio(int id);
 
 }
