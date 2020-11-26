@@ -62,6 +62,7 @@ public class AlimentoServiceImpl implements AlimentoService {
 					.orElseThrow(() -> new ResourceNotFoundException("Alimento not found :: " + id));
 		} catch (ResourceNotFoundException e) {
 			e.printStackTrace();
+			return null;
 		}
 		alimento.setNome(alimentoUpdate.getNome());
 		alimento.setDescrizione(alimentoUpdate.getDescrizione());

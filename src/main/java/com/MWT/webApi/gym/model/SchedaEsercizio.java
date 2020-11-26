@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -44,6 +46,9 @@ public class SchedaEsercizio {
 	private String descrizione;
 	@Column(name = "nome")
 	private String nome;
+	@Column(name = "info")
+	private String info;
+	@CreationTimestamp
 	@Column(name = "data_inserimento")
 	private Date dataInserimento;
 	

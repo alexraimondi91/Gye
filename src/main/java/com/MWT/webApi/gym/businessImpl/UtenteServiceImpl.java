@@ -83,6 +83,9 @@ public class UtenteServiceImpl implements UtenteService{
 	public Utente updateUser(SignupRequest signUpRequest, int id) {
 		
 		Utente user = utenteRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + id));
+		if(user == null) {
+			return null;
+		}
 		user.setNome(signUpRequest.getNome());
 		user.setCognome(signUpRequest.getCognome());
 		user.setEmail(signUpRequest.getEmail());

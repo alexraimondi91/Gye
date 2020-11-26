@@ -56,6 +56,8 @@ public class EsercizioServiceImpl implements EsercizioService{
 					.orElseThrow(() -> new ResourceNotFoundException("Esercizio not found :: " + id));
 		} catch (ResourceNotFoundException e) {
 			e.printStackTrace();
+			return null;
+
 		}
 		esercizio.setId(id);
 		esercizio.setDescrizione(esercizioUpdate.getDescrizione());

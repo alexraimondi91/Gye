@@ -29,6 +29,7 @@ public class SchedaEsercizioServiceImpl implements SchedaEsercizioService{
 					.orElseThrow(() -> new ResourceNotFoundException("SchedaEsercizio not found :: " + id));
 		} catch (ResourceNotFoundException e) {
 			e.printStackTrace();
+			return null;
 		}
 		
 		return schedaEsercizio;
@@ -48,6 +49,7 @@ public class SchedaEsercizioServiceImpl implements SchedaEsercizioService{
 					.orElseThrow(() -> new ResourceNotFoundException("SchedaEsercizio not found :: " + id));
 		} catch (ResourceNotFoundException e) {
 			e.printStackTrace();
+            return null;
 		}
 		
 		schedaEsercizio.setId(id);

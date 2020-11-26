@@ -74,7 +74,13 @@ public class DietaController {
 	public Response updateDieta(@PathParam(value = "id") int id,
 			@Valid @RequestBody Dieta dietaUpdate) throws ResourceNotFoundException {
 		
-		dietaServiceImpl.updateDieta(id, dietaUpdate);		
+		Dieta update = dietaServiceImpl.updateDieta(id, dietaUpdate);	
+		
+		if(update == null) {
+			return Response
+				      .status(Response.Status.BAD_REQUEST)
+				      .build();
+		}
 		return Response
 			      .status(Response.Status.OK)
 			      .build();

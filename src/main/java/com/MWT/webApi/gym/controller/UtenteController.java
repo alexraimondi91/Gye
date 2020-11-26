@@ -93,7 +93,13 @@ public class UtenteController {
 	public Response updateUtente(@PathParam(value = "id") int id,
 			@Valid @RequestBody SignupRequest signupRequest) throws ResourceNotFoundException {
 		
-		utenteServiceImpl.updateUser(signupRequest,id);		
+		Utente update = utenteServiceImpl.updateUser(signupRequest,id);		
+		
+		if(update == null) {
+			return Response
+				      .status(Response.Status.BAD_REQUEST)
+				      .build();
+		}
 		return Response
 	      .status(Response.Status.OK)
 	      .build();

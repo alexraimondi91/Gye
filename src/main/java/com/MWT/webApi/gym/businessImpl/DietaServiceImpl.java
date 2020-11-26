@@ -111,6 +111,7 @@ public class DietaServiceImpl implements DietaService {
 					.orElseThrow(() -> new ResourceNotFoundException("Dieta not found :: " + id));
 		} catch (ResourceNotFoundException e) {
 			e.printStackTrace();
+			return null;
 		}
 		dieta.setId(id);
 		dieta.setAlimenti(dietaUpdate.getAlimenti());

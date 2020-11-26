@@ -72,7 +72,12 @@ public class AlimentoController {
 	public Response updateAlimento(@PathParam(value = "id") int id,
 			@Valid @RequestBody Alimento alimentoUpdate) throws ResourceNotFoundException {
 		
-		alimentoServiceImpl.updateAlimento(id, alimentoUpdate);		
+		Alimento update = alimentoServiceImpl.updateAlimento(id, alimentoUpdate);		
+		if(update == null) {
+			return Response
+				      .status(Response.Status.BAD_REQUEST)
+				      .build();
+		}
 		return Response
 			      .status(Response.Status.OK)
 			      .build();

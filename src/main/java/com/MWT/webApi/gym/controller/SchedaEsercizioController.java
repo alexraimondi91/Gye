@@ -72,7 +72,13 @@ public class SchedaEsercizioController {
 	public Response updateSchedaEsercizio(@PathParam(value = "id") int id,
 			@Valid @RequestBody SchedaEsercizio schedaEsercizioUpdate) throws ResourceNotFoundException {
 		
-		 schedaEsercizioServiceImpl.updateSchedaEsercizio(id, schedaEsercizioUpdate);		
+		SchedaEsercizio update = schedaEsercizioServiceImpl.updateSchedaEsercizio(id, schedaEsercizioUpdate);	
+		if(update == null) {
+			 return Response
+				      .status(Response.Status.INTERNAL_SERVER_ERROR)
+				      .build();
+		
+		}
 		 return Response
 			      .status(Response.Status.OK)
 			      .build();
