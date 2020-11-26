@@ -13,6 +13,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,14 +27,14 @@ import com.MWT.webApi.gym.exception.ResourceNotFoundException;
 import com.MWT.webApi.gym.model.SchedaEsercizio;
 
 @Component
-@Path("/api/v1")
+@Path("/api/v1/schede")
 public class SchedaEsercizioController {
 	
 	@Autowired
 	private SchedaEsercizioServiceImpl schedaEsercizioServiceImpl;
 	
 	@GET
-	@Path("/scheda-esercizi")
+	@Path("/")
 	@Produces("application/json")
 	@PreAuthorize("hasRole('ADMIN')")	
 	public List<SchedaEsercizio> getAlSchedaEsercizi() {
@@ -41,7 +42,7 @@ public class SchedaEsercizioController {
 	}
 
 	@GET
-	@Path("/scheda-esercizio/{id}")
+	@Path("/{id}")
 	@Produces("application/json")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
 	public ResponseEntity<SchedaEsercizio> getSchedaEsercizio(@PathParam(value = "id") int id) {
@@ -50,40 +51,50 @@ public class SchedaEsercizioController {
 	}
 
 	@POST
-	@Produces("application/json")
 	@Consumes("application/json")
-	@Path("/scheda-esercizio")
-	@PostMapping("/scheda-esercizi")
+	@Path("/")
+	@PostMapping("/")
 	@PreAuthorize("hasRole('ADMIN')")	
 
-	public SchedaEsercizio createSchedaEsercizio(SchedaEsercizio schedaEsercizio) {
+	public Response createSchedaEsercizio(SchedaEsercizio schedaEsercizio) {
 		
-		return schedaEsercizioServiceImpl.createSchedaEsercizio(schedaEsercizio);
+		schedaEsercizioServiceImpl.createSchedaEsercizio(schedaEsercizio);
+
+		return Response
+			      .status(Response.Status.OK)
+			      .build();
 	}
 
 	@PUT
-	@Produces("application/json")
 	@Consumes("application/json")
-	@Path("/scheda-esercizio/{id}")
+	@Path("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")	
-	public ResponseEntity<SchedaEsercizio> updateSchedaEsercizio(@PathParam(value = "id") int id,
+	public Response updateSchedaEsercizio(@PathParam(value = "id") int id,
 			@Valid @RequestBody SchedaEsercizio schedaEsercizioUpdate) throws ResourceNotFoundException {
 		
-		SchedaEsercizio schedaEsercizio = schedaEsercizioServiceImpl.updateSchedaEsercizio(id, schedaEsercizioUpdate);		
-		return ResponseEntity.ok(schedaEsercizio);
+		 schedaEsercizioServiceImpl.updateSchedaEsercizio(id, schedaEsercizioUpdate);		
+		 return Response
+			      .status(Response.Status.OK)
+			      .build();
 	}
 
 	@DELETE
-	@Path("/scheda-esercizio/{id}")
-	@Produces("application/json")
+	@Path("/{id}")
 	@Consumes("application/json")
 	@PreAuthorize("hasRole('ADMIN')")	
-	public Map<String, Boolean> deleteSchedaEsercizio(@PathParam(value = "id") int id) throws ResourceNotFoundException {
+	public Response deleteSchedaEsercizio(@PathParam(value = "id") int id) throws ResourceNotFoundException {
 		
-		boolean deleted = schedaEsercizioServiceImpl.deleteSchedaEsercizio(id);
-		Map<String, Boolean> response = new HashMap<>();
-		response.put("deleted", deleted);
-		return response;
+		boolean deleted = schedaEsercizioServiceImpl.deleteSchedaEsercizio(id);		
+		if(deleted) {
+			return Response
+				      .status(Response.Status.OK)
+				      .build();
+		}
+		else {
+			return Response
+				      .status(Response.Status.INTERNAL_SERVER_ERROR)
+				      .build();
+		}
 	}
 
 }

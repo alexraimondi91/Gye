@@ -13,6 +13,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,14 +28,14 @@ import com.MWT.webApi.gym.model.Alimento;
 import com.MWT.webApi.gym.repository.AlimentoRepository;
 
 @Component
-@Path("/api/v1")
+@Path("/api/v1/alimenti")
 public class AlimentoController {
 	
 	@Autowired
 	private AlimentoServiceImpl alimentoServiceImpl;
 
 	@GET
-	@Path("/alimenti")
+	@Path("/")
 	@Produces("application/json")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
 	public List<Alimento> getAllAlimenti() {
@@ -42,7 +43,7 @@ public class AlimentoController {
 	}
 
 	@GET
-	@Path("/alimento/{id}")
+	@Path("/{id}")
 	@Produces("application/json")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
 	public ResponseEntity<Alimento> getAlimento(@PathParam(value = "id") int id) {
@@ -51,40 +52,49 @@ public class AlimentoController {
 	}
 
 	@POST
-	@Produces("application/json")
 	@Consumes("application/json")
-	@Path("/alimento")
-	@PostMapping("/alimento")
+	@Path("/")
+	@PostMapping("/")
 	@PreAuthorize("hasRole('ADMIN')")	
 
-	public Alimento createAlimento(Alimento alimento) {
+	public Response createAlimento(Alimento alimento) {
 		
-		return alimentoServiceImpl.createAlimento(alimento);
+		alimentoServiceImpl.createAlimento(alimento);
+		return Response
+			      .status(Response.Status.OK)
+			      .build();
 	}
 
 	@PUT
-	@Produces("application/json")
 	@Consumes("application/json")
-	@Path("/alimento/{id}")
+	@Path("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")	
-	public ResponseEntity<Alimento> updateAlimento(@PathParam(value = "id") int id,
+	public Response updateAlimento(@PathParam(value = "id") int id,
 			@Valid @RequestBody Alimento alimentoUpdate) throws ResourceNotFoundException {
 		
-		Alimento alimento = alimentoServiceImpl.updateAlimento(id, alimentoUpdate);		
-		return ResponseEntity.ok(alimento);
+		alimentoServiceImpl.updateAlimento(id, alimentoUpdate);		
+		return Response
+			      .status(Response.Status.OK)
+			      .build();
 	}
 
 	@DELETE
-	@Path("/alimento/{id}")
-	@Produces("application/json")
+	@Path("/{id}")
 	@Consumes("application/json")
 	@PreAuthorize("hasRole('ADMIN')")	
-	public Map<String, Boolean> deleteAlimento(@PathParam(value = "id") int id) throws ResourceNotFoundException {
+	public Response deleteAlimento(@PathParam(value = "id") int id) throws ResourceNotFoundException {
 		
 		boolean deleted = alimentoServiceImpl.deleteAlimento(id);
-		Map<String, Boolean> response = new HashMap<>();
-		response.put("deleted", deleted);
-		return response;
+		if(deleted) {
+			return Response
+				      .status(Response.Status.OK)
+				      .build();
+		}
+		else {
+			return Response
+				      .status(Response.Status.INTERNAL_SERVER_ERROR)
+				      .build();
+		}
 	}
 
 }

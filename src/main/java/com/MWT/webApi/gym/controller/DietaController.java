@@ -13,6 +13,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,14 +29,14 @@ import com.MWT.webApi.gym.model.Alimento;
 import com.MWT.webApi.gym.model.Dieta;
 
 @Component
-@Path("/api/v1")
+@Path("/api/v1/diete")
 public class DietaController {
 	
 	@Autowired
 	private DietaServiceImpl dietaServiceImpl;
 
 	@GET
-	@Path("/diete")
+	@Path("/")
 	@Produces("application/json")
 	@PreAuthorize("hasRole('ADMIN')")	
 	public List<Dieta> getAllDiete() {
@@ -43,49 +44,59 @@ public class DietaController {
 	}
 
 	@GET
-	@Path("/dieta/{id}")
+	@Path("/{id}")
 	@Produces("application/json")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
 	public ResponseEntity<Dieta> getDieta(@PathParam(value = "id") int id) {
+		
 		Dieta dieta = dietaServiceImpl.getDieta(id);
 		return ResponseEntity.ok().body(dieta);
 	}
 
 	@POST
-	@Produces("application/json")
 	@Consumes("application/json")
-	@Path("/dieta")
-	@PostMapping("/diete")
+	@Path("/")
+	@PostMapping("/")
 	@PreAuthorize("hasRole('ADMIN')")	
 
-	public Dieta createDieta(Dieta dieta) {
+	public Response createDieta(Dieta dieta) {
 		
-		return dietaServiceImpl.createDieta(dieta);
+		dietaServiceImpl.createDieta(dieta);		
+		return Response
+			      .status(Response.Status.OK)
+			      .build();
 	}
 
 	@PUT
-	@Produces("application/json")
 	@Consumes("application/json")
-	@Path("/dieta/{id}")
+	@Path("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")	
-	public ResponseEntity<Dieta> updateDieta(@PathParam(value = "id") int id,
+	public Response updateDieta(@PathParam(value = "id") int id,
 			@Valid @RequestBody Dieta dietaUpdate) throws ResourceNotFoundException {
 		
-		Dieta dieta = dietaServiceImpl.updateDieta(id, dietaUpdate);		
-		return ResponseEntity.ok(dieta);
+		dietaServiceImpl.updateDieta(id, dietaUpdate);		
+		return Response
+			      .status(Response.Status.OK)
+			      .build();
 	}
 
 	@DELETE
-	@Path("/diete/{id}")
-	@Produces("application/json")
+	@Path("/{id}")
 	@Consumes("application/json")
 	@PreAuthorize("hasRole('ADMIN')")	
-	public Map<String, Boolean> deleteDieta(@PathParam(value = "id") int id) throws ResourceNotFoundException {
+	public Response deleteDieta(@PathParam(value = "id") int id) throws ResourceNotFoundException {
 		
 		boolean deleted = dietaServiceImpl.deleteDieta(id);
-		Map<String, Boolean> response = new HashMap<>();
-		response.put("deleted", deleted);
-		return response;
+		if(deleted) {
+			return Response
+				      .status(Response.Status.OK)
+				      .build();
+		}
+		else {
+			return Response
+				      .status(Response.Status.INTERNAL_SERVER_ERROR)
+				      .build();
+		}
 	}
 
 }

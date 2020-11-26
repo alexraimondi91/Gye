@@ -13,8 +13,10 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -29,14 +31,14 @@ import com.MWT.webApi.gym.model.TipiRuoli;
 import com.MWT.webApi.gym.model.Utente;
 
 @Component
-@Path("/api/v1")
+@Path("/api/v1/utenti")
 public class UtenteController {
 	
 	@Autowired
 	private com.MWT.webApi.gym.businessImpl.UtenteServiceImpl utenteServiceImpl;
 	
 	@GET
-	@Path("/utenti")
+	@Path("/")
 	@Produces("application/json")
 	@PreAuthorize("hasRole('ADMIN')")	
 	public List<Utente> getAllUtenti() {
@@ -44,7 +46,7 @@ public class UtenteController {
 	}
 	
 	@GET
-	@Path("/utenti/user")
+	@Path("/user")
 	@Produces("application/json")
 	@PreAuthorize("hasRole('ADMIN')")	
 	public List<Utente> getAllUtentiRuoloUser() {
@@ -52,7 +54,7 @@ public class UtenteController {
 	}
 	
 	@GET
-	@Path("/utenti/admin")
+	@Path("/admin")
 	@Produces("application/json")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
 	public List<Utente> getAllUtentiRuoloAdmin() {
@@ -60,7 +62,7 @@ public class UtenteController {
 	}
 	
 	@GET
-	@Path("/diete/utente/{id}")
+	@Path("/{id}/diete")
 	@Produces("application/json")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
 	public List<Dieta> getDietePerUtente(@PathParam(value = "id") int id) {
@@ -68,7 +70,7 @@ public class UtenteController {
 	}
 	
 	@GET
-	@Path("/schede/utente/{id}")
+	@Path("/{id}/schede/")
 	@Produces("application/json")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
 	public List<SchedaEsercizio> getSchedaPerUtente(@PathParam(value = "id") int id) {
@@ -76,7 +78,7 @@ public class UtenteController {
 	}
 
 	@GET
-	@Path("/utente/{id}")
+	@Path("/{id}")
 	@Produces("application/json")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
 	public ResponseEntity<Utente> getUtente(@PathParam(value = "id") int id) {
@@ -85,29 +87,36 @@ public class UtenteController {
 	}
 	
 	@PUT
-	@Produces("application/json")
 	@Consumes("application/json")
-	@Path("/utente/{id}")
+	@Path("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")	
-	public ResponseEntity<Utente> updateUtente(@PathParam(value = "id") int id,
+	public Response updateUtente(@PathParam(value = "id") int id,
 			@Valid @RequestBody SignupRequest signupRequest) throws ResourceNotFoundException {
 		
-		Utente utente = utenteServiceImpl.updateUser(signupRequest,id);		
-		return ResponseEntity.ok(utente);
+		utenteServiceImpl.updateUser(signupRequest,id);		
+		return Response
+	      .status(Response.Status.OK)
+	      .build();
 	}
 
 
 	@DELETE
-	@Path("/utente/{id}")
-	@Produces("application/json")
+	@Path("/{id}")
 	@Consumes("application/json")
 	@PreAuthorize("hasRole('ADMIN')")	
-	public Map<String, Boolean> deleteSchedaEsercizio(@PathParam(value = "id") int id) throws ResourceNotFoundException {
+	public Response deleteSchedaEsercizio(@PathParam(value = "id") int id) throws ResourceNotFoundException {
 		
 		boolean deleted = utenteServiceImpl.deleteUtente(id);
-		Map<String, Boolean> response = new HashMap<>();
-		response.put("deleted", deleted);
-		return response;
+		if(deleted) {
+			return Response
+				      .status(Response.Status.OK)
+				      .build();
+		}
+		else {
+			return Response
+				      .status(Response.Status.INTERNAL_SERVER_ERROR)
+				      .build();
+		}
 	}
 	
 	

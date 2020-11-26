@@ -13,6 +13,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,14 +27,14 @@ import com.MWT.webApi.gym.exception.ResourceNotFoundException;
 import com.MWT.webApi.gym.model.Esercizio;
 
 @Component
-@Path("/api/v1")
+@Path("/api/v1/esercizi")
 public class EsercizioController {
 	
 	@Autowired
 	private EsercizioServiceImpl esercizioServiceImpl;
 
 	@GET
-	@Path("/esercizi")
+	@Path("/")
 	@Produces("application/json")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
 	public List<Esercizio> getAllEsercizi() {
@@ -41,7 +42,7 @@ public class EsercizioController {
 	}
 
 	@GET
-	@Path("/esercizio/{id}")
+	@Path("/{id}")
 	@Produces("application/json")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
 	public ResponseEntity<Esercizio> getEsercizio(@PathParam(value = "id") int id) {
@@ -50,40 +51,51 @@ public class EsercizioController {
 	}
 
 	@POST
-	@Produces("application/json")
 	@Consumes("application/json")
-	@Path("/esercizio")
-	@PostMapping("/esercizio")
+	@Path("/")
+	@PostMapping("/")
 	@PreAuthorize("hasRole('ADMIN')")	
 
-	public Esercizio createEsercizio(Esercizio esercizio) {
+	public Response createEsercizio(Esercizio esercizio) {
 		
-		return esercizioServiceImpl.createEsercizio(esercizio);
+		esercizioServiceImpl.createEsercizio(esercizio);
+		
+		return Response
+	      .status(Response.Status.OK)
+	      .build();
+
 	}
 
 	@PUT
-	@Produces("application/json")
 	@Consumes("application/json")
-	@Path("/esercizio/{id}")
+	@Path("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")	
-	public ResponseEntity<Esercizio> updateAlimento(@PathParam(value = "id") int id,
+	public Response updateAlimento(@PathParam(value = "id") int id,
 			@Valid @RequestBody Esercizio esercizioUpdate) throws ResourceNotFoundException {
 		
-		Esercizio esercizio = esercizioServiceImpl.updateEsercizio(id, esercizioUpdate);		
-		return ResponseEntity.ok(esercizio);
+		esercizioServiceImpl.updateEsercizio(id, esercizioUpdate);		
+		return Response
+			      .status(Response.Status.OK)
+			      .build();
 	}
 
 	@DELETE
-	@Path("/esercizio/{id}")
-	@Produces("application/json")
+	@Path("/{id}")
 	@Consumes("application/json")
 	@PreAuthorize("hasRole('ADMIN')")	
-	public Map<String, Boolean> deleteEsercizio(@PathParam(value = "id") int id) throws ResourceNotFoundException {
+	public Response deleteEsercizio(@PathParam(value = "id") int id) throws ResourceNotFoundException {
 		
 		boolean delete = esercizioServiceImpl.deleteEsercizio(id);
-		Map<String, Boolean> response = new HashMap<>();
-		response.put("deleted", delete);
-		return response;
+		if(delete) {
+			return Response
+				      .status(Response.Status.OK)
+				      .build();
+		}
+		else {
+			return Response
+				      .status(Response.Status.INTERNAL_SERVER_ERROR)
+				      .build();
+		}
 	}
 
 }
