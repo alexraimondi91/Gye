@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.MWT.webApi.gym.businessImpl.EsercizioServiceImpl;
 import com.MWT.webApi.gym.exception.ResourceNotFoundException;
 import com.MWT.webApi.gym.model.Esercizio;
+import com.MWT.webApi.gym.model.Utente;
 
 @Component
 @Path("/api/v1/esercizi")
@@ -40,6 +41,8 @@ public class EsercizioController {
 	public List<Esercizio> getAllEsercizi() {
 		return esercizioServiceImpl.getAllEsercizi();
 	}
+	
+
 
 	@GET
 	@Path("/{id}")

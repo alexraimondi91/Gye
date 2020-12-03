@@ -1,7 +1,9 @@
 package com.MWT.webApi.gym.businessImpl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -30,60 +32,67 @@ import com.MWT.webApi.gym.repository.SchedaEsercizioRepository;
 import com.MWT.webApi.gym.repository.UtenteRepository;
 
 @Service
-public class UtenteServiceImpl implements UtenteService{
-	
+public class UtenteServiceImpl implements UtenteService {
+
 	@Autowired
 	private UtenteRepository utenteRepository;
-	
+
 	@Autowired
 	private DietaRepository dietaRepository;
 
-	
+	@Autowired
+	private SchedaEsercizioRepository shedaEsercizioRepository;
+
 	@Autowired
 	private RuoliRepository ruoliRepository;
-	
+
 	@Autowired
 	PasswordEncoder encoder;
-	
+
 	@Override
 	public Utente getUtente(int id) {
-		return utenteRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + id));
+		return utenteRepository.findById(id)
+				.orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + id));
 
 	}
 
 	@Override
 	public List<Utente> getAllUtente() {
-		
+
 		return utenteRepository.findAll();
 	}
-	
+
 	@Override
 	public List<Utente> getAllUtenteRole(TipiRuoli role) {
-		
+
 		return utenteRepository.findUserByRole(role);
 	}
+
 	
 	@Override
 	public List<Dieta> getDieteUtente(int id) {
-		
-		Utente utente =  utenteRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + id));
-		
+
+		Utente utente = utenteRepository.findById(id)
+				.orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + id));
+
 		return dietaRepository.findByUtente(utente);
 	}
-	
+
 	@Override
 	public List<SchedaEsercizio> getSchedeUtente(int id) {
-		
-		Utente utente =  utenteRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + id));
+
+		Utente utente = utenteRepository.findById(id)
+				.orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + id));
 		List<SchedaEsercizio> schedaUtente = utente.getSchedaEsercizi();
 		return schedaUtente;
 	}
-	
+
 	@Override
 	public Utente updateUser(SignupRequest signUpRequest, int id) {
-		
-		Utente user = utenteRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + id));
-		if(user == null) {
+
+		Utente user = utenteRepository.findById(id)
+				.orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + id));
+		if (user == null) {
 			return null;
 		}
 		user.setNome(signUpRequest.getNome());
@@ -109,7 +118,7 @@ public class UtenteServiceImpl implements UtenteService{
 					roles.add(adminRole);
 
 					break;
-				
+
 				default:
 					Ruolo userRole = ruoliRepository.findByNome(TipiRuoli.ROLE_USER)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -124,8 +133,6 @@ public class UtenteServiceImpl implements UtenteService{
 		return user;
 	}
 
-	
-
 	@Override
 	public boolean deleteUtente(int id) {
 		Utente utente = new Utente();
@@ -139,10 +146,9 @@ public class UtenteServiceImpl implements UtenteService{
 			e.printStackTrace();
 			delete = false;
 		}
-		
+
 		return delete;
-		
-		
+
 	}
 
 }

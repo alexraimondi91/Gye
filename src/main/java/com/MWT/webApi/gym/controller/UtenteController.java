@@ -44,6 +44,7 @@ public class UtenteController {
 	public List<Utente> getAllUtenti() {
 		return utenteServiceImpl.getAllUtente();
 	}
+
 	
 	@GET
 	@Path("/user")

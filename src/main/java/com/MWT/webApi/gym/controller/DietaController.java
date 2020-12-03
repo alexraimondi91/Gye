@@ -27,6 +27,7 @@ import com.MWT.webApi.gym.businessImpl.DietaServiceImpl;
 import com.MWT.webApi.gym.exception.ResourceNotFoundException;
 import com.MWT.webApi.gym.model.Alimento;
 import com.MWT.webApi.gym.model.Dieta;
+import com.MWT.webApi.gym.model.Utente;
 
 @Component
 @Path("/api/v1/diete")
@@ -41,6 +42,15 @@ public class DietaController {
 	@PreAuthorize("hasRole('ADMIN')")	
 	public List<Dieta> getAllDiete() {
 		return dietaServiceImpl.getAllDieta();
+	}
+	
+	@GET
+	@Path("/{id}/utente")
+	@Produces("application/json")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
+	public ResponseEntity<Utente> getUtenteScheda(@PathParam(value = "id") int id) {
+		Utente utente = dietaServiceImpl.getUtenteDieta(id);
+		return ResponseEntity.ok().body(utente);
 	}
 
 	@GET

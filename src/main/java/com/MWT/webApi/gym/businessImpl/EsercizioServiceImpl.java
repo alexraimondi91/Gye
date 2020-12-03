@@ -10,6 +10,7 @@ import com.MWT.webApi.gym.model.Alimento;
 import com.MWT.webApi.gym.model.Dieta;
 import com.MWT.webApi.gym.model.Esercizio;
 import com.MWT.webApi.gym.model.SchedaEsercizio;
+import com.MWT.webApi.gym.model.Utente;
 import com.MWT.webApi.gym.repository.SchedaEsercizioRepository;
 
 @Service
@@ -40,6 +41,8 @@ public class EsercizioServiceImpl implements EsercizioService{
 		
 		return esercizio;
 	}
+	
+
 	
 
 	@Override

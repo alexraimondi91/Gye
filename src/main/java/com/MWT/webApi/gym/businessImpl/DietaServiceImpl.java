@@ -11,6 +11,7 @@ import com.MWT.webApi.gym.business.DietaService;
 import com.MWT.webApi.gym.exception.ResourceNotFoundException;
 import com.MWT.webApi.gym.model.Alimento;
 import com.MWT.webApi.gym.model.Dieta;
+import com.MWT.webApi.gym.model.SchedaEsercizio;
 import com.MWT.webApi.gym.model.Utente;
 import com.MWT.webApi.gym.repository.DietaRepository;
 import com.your_company.dieta.TipoDieta;
@@ -52,6 +53,22 @@ public class DietaServiceImpl implements DietaService {
 
 		return tipoDieta;
 
+	}
+	
+	public Utente getUtenteDieta(int id) {
+		
+		Dieta dieta = new Dieta();
+		Utente utente = new Utente();
+		try {
+			dieta = dietaRepository.findById(id)
+					.orElseThrow(() -> new ResourceNotFoundException("Dieta not found :: " + id));
+
+			utente = dieta.getUtente();
+		} catch (ResourceNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return utente;
 	}
 
 	@Override

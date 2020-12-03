@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.MWT.webApi.gym.business.SchedaEsercizioService;
 import com.MWT.webApi.gym.exception.ResourceNotFoundException;
 import com.MWT.webApi.gym.model.SchedaEsercizio;
+import com.MWT.webApi.gym.model.Utente;
 import com.MWT.webApi.gym.repository.SchedaEsercizioRepository;
 
 @Service
@@ -33,6 +34,22 @@ public class SchedaEsercizioServiceImpl implements SchedaEsercizioService{
 		}
 		
 		return schedaEsercizio;
+	}
+	
+	public Utente getUtenteScheda(int id) {
+		
+		SchedaEsercizio scheda = new SchedaEsercizio();
+		Utente utente = new Utente();
+		try {
+			scheda = schedaEsercizioRepository.findById(id)
+					.orElseThrow(() -> new ResourceNotFoundException("Esercizio not found :: " + id));
+
+			utente = scheda.getUtente();
+		} catch (ResourceNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return utente;
 	}
 
 	@Override

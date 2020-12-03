@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.MWT.webApi.gym.businessImpl.SchedaEsercizioServiceImpl;
 import com.MWT.webApi.gym.exception.ResourceNotFoundException;
 import com.MWT.webApi.gym.model.SchedaEsercizio;
+import com.MWT.webApi.gym.model.Utente;
 
 @Component
 @Path("/api/v1/schede")
@@ -39,6 +40,15 @@ public class SchedaEsercizioController {
 	@PreAuthorize("hasRole('ADMIN')")	
 	public List<SchedaEsercizio> getAlSchedaEsercizi() {
 		return schedaEsercizioServiceImpl.getAllSchedaEsercizi();
+	}
+	
+	@GET
+	@Path("/{id}/utente")
+	@Produces("application/json")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")	
+	public ResponseEntity<Utente> getUtenteScheda(@PathParam(value = "id") int id) {
+		Utente utente = schedaEsercizioServiceImpl.getUtenteScheda(id);
+		return ResponseEntity.ok().body(utente);
 	}
 
 	@GET
