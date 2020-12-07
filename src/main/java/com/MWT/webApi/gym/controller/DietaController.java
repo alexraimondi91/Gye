@@ -68,7 +68,6 @@ public class DietaController {
 	@Path("/")
 	@PostMapping("/")
 	@PreAuthorize("hasRole('ADMIN')")	
-
 	public Response createDieta(Dieta dieta) {
 		
 		dietaServiceImpl.createDieta(dieta);		
